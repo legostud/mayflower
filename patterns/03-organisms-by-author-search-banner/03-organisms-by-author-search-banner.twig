@@ -1,0 +1,37 @@
+{% set patternId = searchBanner.id ? : "GUID935283478" %}
+
+<section class="ma__search-banner" id="{{ patternId }}">
+  <style>
+    #{{ patternId }} {
+      background-image: url('{{ searchBanner.bgNarrow }}');
+    }
+
+    @media (min-width: 801px) {
+      #{{ patternId }} {
+        background-image: url('{{ searchBanner.bgWide }}');
+      }
+    }
+  </style>
+  <div class="ma__search-banner__container">
+    {# backward compatible with v5.6 - pageIntro replaced title and intro #}
+    {% set pageIntro = searchBanner.pageIntro ? : { "pageTitle": { "text": searchBanner.title }, "subTitle": searchBanner.intro } %}
+    {% include "@molecules/page-intro.twig" %}
+
+    {% set searchBannerForm = searchBanner.searchBannerForm %}
+    {% include "@molecules/search-banner-form.twig" %}
+
+    <div class="ma__search-banner__links">
+      {% set linkList = searchBanner.linkList %}
+      {% include "@organisms/by-author/link-list.twig" %}
+    </div>
+  </div>
+  {# backward compatible with v5.6 - replaced imageName and imageAuthor with bannerCredit #}
+  {% if searchBanner.imageName and searchBanner.imageAuthor %}
+    {% set bannerCredit = { "imageName": searchBanner.imageName, "imageAuthor": searchBanner.imageAuthor } %}
+    {% include "@molecules/banner-credit.twig" %}
+  {% endif %}
+  {% if searchBanner.bannerCredit %}
+    {% set bannerCredit = searchBanner.bannerCredit %}
+    {% include "@molecules/banner-credit.twig" %}
+  {% endif %}
+</section>
